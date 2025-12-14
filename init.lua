@@ -919,70 +919,6 @@ require('lazy').setup({
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
-      -- Enhanced mini.animate setup
-      local animate_opts = {}
-      -- Don't use animate when scrolling with the mouse
-      local mouse_scrolled = false
-      for _, scroll in ipairs { 'Up', 'Down' } do
-        local key = '<ScrollWheel' .. scroll .. '>'
-        vim.keymap.set({ '', 'i' }, key, function()
-          mouse_scrolled = true
-          return key
-        end, { expr = true })
-      end
-
-      -- Optional: Disable in grug-far filetype (remove if you don't use grug-far)
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = 'grug-far',
-        callback = function()
-          vim.b.minianimate_disable = true
-        end,
-      })
-
-      -- Optional toggle keymap (adapt if you don't have Snacks; this is a simple alternative)
-      -- If using LazyVim's Snacks or similar, uncomment the original; otherwise, use this:
-      vim.keymap.set('n', '<leader>ua', function()
-        vim.g.minianimate_disable = not vim.g.minianimate_disable
-        print('Mini Animate: ' .. (vim.g.minianimate_disable and 'disabled' or 'enabled'))
-      end, { desc = 'Toggle Mini Animate' })
-
-      -- If you have Snacks from LazyVim, use this instead (schedule to avoid override issues):
-      -- vim.schedule(function()
-      --   Snacks.toggle({
-      --     name = "Mini Animate",
-      --     get = function()
-      --       return not vim.g.minianimate_disable
-      --     end,
-      --     set = function(state)
-      --       vim.g.minianimate_disable = not state
-      --     end,
-      --   }):map("<leader>ua")
-      -- end)
-
-      local animate = require 'mini.animate'
-      animate_opts = vim.tbl_deep_extend('force', animate_opts, {
-        resize = {
-          timing = animate.gen_timing.linear { duration = 50, unit = 'total' },
-        },
-        scroll = {
-          timing = animate.gen_timing.linear { duration = 150, unit = 'total' },
-          subscroll = animate.gen_subscroll.equal {
-            predicate = function(total_scroll)
-              if mouse_scrolled then
-                mouse_scrolled = false
-                return false
-              end
-              return total_scroll > 1
-            end,
-          },
-        },
-        -- Add these if you want cursor/open/close animations enabled by default
-        cursor = { enable = true },
-        open = { enable = true },
-        close = { enable = true },
-      })
-      require('mini.animate').setup(animate_opts)
-
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
@@ -1054,6 +990,29 @@ require('lazy').setup({
     config = function()
       require('better_escape').setup()
     end,
+  },
+  {
+    'sphamba/smear-cursor.nvim',
+
+    opts = {
+      -- Smear cursor when switching buffers or windows.
+      smear_between_buffers = true,
+
+      -- Smear cursor when moving within line or to neighbor lines.
+      -- Use `min_horizontal_distance_smear` and `min_vertical_distance_smear` for finer control
+      smear_between_neighbor_lines = true,
+
+      -- Draw the smear in buffer space instead of screen space when scrolling
+      scroll_buffer_space = true,
+
+      -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
+      -- Smears and particles will look a lot less blocky.
+      legacy_computing_symbols_support = false,
+
+      -- Smear cursor in insert mode.
+      -- See also `vertical_bar_cursor_insert_mode` and `distance_stop_animating_vertical_bar`.
+      smear_insert_mode = true,
+    },
   },
   -- 'xiyaowong/fast-cursor-move.nvim',
   --
