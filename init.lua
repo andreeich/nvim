@@ -145,6 +145,10 @@ vim.o.splitbelow = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 --
+--
+--
+--
+--
 --  Notice listchars is set using `vim.opt` instead of `vim.o`.
 --  It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.
 --   See `:help lua-options`
@@ -165,6 +169,17 @@ vim.o.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.o.confirm = true
+
+-- Enable folding with treesitter
+-- vim.o.foldmethod = 'expr'
+-- vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+-- vim.o.foldlevel = 99      -- Start with all folds open
+-- vim.o.foldlevelstart = 99 -- Start with all folds open when opening a file
+-- vim.o.foldenable = true   -- Enable folding
+vim.o.expandtab = true
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.opt.softtabstop = 0
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -204,6 +219,12 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+
+-- NOTE: Custom keymaps
+vim.keymap.set('n', 'gb', ':tabprevious<CR>', { silent = true, desc = 'Go to previous tab page' })
+vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', {
+  desc = 'Write file',
+})
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -916,26 +937,26 @@ require('lazy').setup({
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup {
-        mappings = {
-          add = '', -- Disable normal mode add
-          delete = '', -- Disable normal mode delete
-          find = '', -- Disable normal mode find
-          find_left = '', -- Disable normal mode find_left
-          highlight = '', -- Disable normal mode highlight
-          replace = '', -- Disable normal mode replace
-          update_n_lines = '', -- Disable normal mode update_n_lines
-
-          suffix_last = 'l', -- Suffix to search with "prev" method
-          suffix_next = 'n', -- Suffix to search with "next" method
-        },
-        -- Configure visual mode mapping to match Zed
-        custom_surroundings = nil,
-        highlight_duration = 500,
-        respect_selection_type = false,
-        search_method = 'cover',
-        silent = false,
-      }
+      -- require('mini.surround').setup {
+      --   mappings = {
+      --     add = '', -- Disable normal mode add
+      --     delete = '', -- Disable normal mode delete
+      --     find = '', -- Disable normal mode find
+      --     find_left = '', -- Disable normal mode find_left
+      --     highlight = '', -- Disable normal mode highlight
+      --     replace = '', -- Disable normal mode replace
+      --     update_n_lines = '', -- Disable normal mode update_n_lines
+      --
+      --     suffix_last = 'l', -- Suffix to search with "prev" method
+      --     suffix_next = 'n', -- Suffix to search with "next" method
+      --   },
+      --   -- Configure visual mode mapping to match Zed
+      --   custom_surroundings = nil,
+      --   highlight_duration = 500,
+      --   respect_selection_type = false,
+      --   search_method = 'cover',
+      --   silent = false,
+      -- }
 
       -- Set up Zed-like keybinding: 's' in visual mode to add surrounds
       vim.keymap.set('x', 's', function()
@@ -945,17 +966,17 @@ require('lazy').setup({
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
-      local statusline = require 'mini.statusline'
+      -- local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
+      -- statusline.setup { use_icons = vim.g.have_nerd_font }
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
       -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
+      -- statusline.section_location = function()
+      --   return '%2l:%-2v'
+      -- end
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
@@ -1039,7 +1060,23 @@ require('lazy').setup({
       duration_multiplier = 0.8, -- Faster animation (default is 1)
     },
   },
-  { 'ggandor/leap.nvim' },
+  {
+    'ggandor/leap.nvim',
+    config = function()
+      vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap)')
+      vim.keymap.set('n', 'S', '<Plug>(leap-from-window)')
+    end,
+  },
+  { 'EdenEast/nightfox.nvim' },
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    priority = 1000,
+    config = function()
+      -- vim.cmd.colorscheme 'carbonfox'
+    end,
+  },
+  { 'ellisonleao/gruvbox.nvim', priority = 1000, config = true },
   -- 'xiyaowong/fast-cursor-move.nvim',
   --
   --
