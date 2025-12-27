@@ -930,38 +930,87 @@ require('lazy').setup({
       --  - va)  - [V]isually select [A]round [)]paren
       --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
       --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
+      local ai = require 'mini.ai'
+
+      ai.setup {
+        n_lines = 500,
+
+        custom_textobjects = {
+          o = ai.gen_spec.treesitter {
+            a = { '@block.outer', '@conditional.outer', '@loop.outer' },
+            i = { '@block.inner', '@conditional.inner', '@loop.inner' },
+          },
+
+          f = ai.gen_spec.treesitter {
+            a = '@function.outer',
+            i = '@function.inner',
+          },
+
+          c = ai.gen_spec.treesitter {
+            a = '@class.outer',
+            i = '@class.inner',
+          },
+
+          t = {
+            '<([%p%w]-)%f[^<%w][^<>]->.-</%1>',
+            '^<.->().*()</[^/]->$',
+          },
+
+          d = { '%f[%d]%d+' },
+
+          e = {
+            {
+              '%u[%l%d]+%f[^%l%d]',
+              '%f[%S][%l%d]+%f[^%l%d]',
+              '%f[%P][%l%d]+%f[^%l%d]',
+              '^[%l%d]+%f[^%l%d]',
+            },
+            '^().*()$',
+          },
+
+          -- buffer textobject (LazyVim-free)
+          g = function()
+            local from = { line = 1, col = 1 }
+            local to = {
+              line = vim.fn.line '$',
+              col = math.max(vim.fn.getline('$'):len(), 1),
+            }
+
+            return {
+              from = from,
+              to = to,
+              vis_mode = 'V', -- linewise
+            }
+          end,
+
+          u = ai.gen_spec.function_call(),
+          U = ai.gen_spec.function_call { name_pattern = '[%w_]' },
+        },
+      }
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
-      -- require('mini.surround').setup {
-      --   mappings = {
-      --     add = '', -- Disable normal mode add
-      --     delete = '', -- Disable normal mode delete
-      --     find = '', -- Disable normal mode find
-      --     find_left = '', -- Disable normal mode find_left
-      --     highlight = '', -- Disable normal mode highlight
-      --     replace = '', -- Disable normal mode replace
-      --     update_n_lines = '', -- Disable normal mode update_n_lines
-      --
-      --     suffix_last = 'l', -- Suffix to search with "prev" method
-      --     suffix_next = 'n', -- Suffix to search with "next" method
-      --   },
-      --   -- Configure visual mode mapping to match Zed
-      --   custom_surroundings = nil,
-      --   highlight_duration = 500,
-      --   respect_selection_type = false,
-      --   search_method = 'cover',
-      --   silent = false,
-      -- }
+      require('mini.surround').setup {
+        mappings = {
+          -- add = 'gsa', -- Add surrounding in Normal and Visual modes
+          -- delete = 'gsd', -- Delete surrounding
+          -- find = 'gsf', -- Find surrounding (to the right)
+          -- find_left = 'gsF', -- Find surrounding (to the left)
+          -- highlight = 'gsh', -- Highlight surrounding
+          -- replace = 'sr', -- Replace surrounding
+          --
+          -- suffix_last = 'l', -- Suffix to search with "prev" method
+          -- suffix_next = 'n', -- Suffix to search with "next" method
+        },
+      }
 
       -- Set up Zed-like keybinding: 's' in visual mode to add surrounds
-      vim.keymap.set('x', 's', function()
-        require('mini.surround').add 'visual'
-      end, { desc = 'Add surround (Zed-like)' })
+      -- vim.keymap.set('x', 's', function()
+      --   require('mini.surround').add 'visual'
+      -- end, { desc = 'Add surround (Zed-like)' })
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -1063,8 +1112,8 @@ require('lazy').setup({
   {
     'ggandor/leap.nvim',
     config = function()
-      vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap)')
-      vim.keymap.set('n', 'S', '<Plug>(leap-from-window)')
+      vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap)', { desc = 'Leap in window' })
+      vim.keymap.set('n', 'g<S-s>', '<Plug>(leap-from-window)', { desc = 'Leap from window' })
     end,
   },
   { 'EdenEast/nightfox.nvim' },
