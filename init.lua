@@ -995,17 +995,18 @@ require('lazy').setup({
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup {
         mappings = {
-          -- add = 'gsa', -- Add surrounding in Normal and Visual modes
-          -- delete = 'gsd', -- Delete surrounding
-          -- find = 'gsf', -- Find surrounding (to the right)
-          -- find_left = 'gsF', -- Find surrounding (to the left)
-          -- highlight = 'gsh', -- Highlight surrounding
-          -- replace = 'sr', -- Replace surrounding
+          add = '', -- Add surrounding in Normal and Visual modes
+          delete = 'ds', -- Delete surrounding
+          find = '', -- Find surrounding (to the right)
+          find_left = '', -- Find surrounding (to the left)
+          highlight = '', -- Highlight surrounding
+          replace = 'cs', -- Replace surrounding
           --
-          -- suffix_last = 'l', -- Suffix to search with "prev" method
-          -- suffix_next = 'n', -- Suffix to search with "next" method
+          suffix_last = 'l', -- Suffix to search with "prev" method
+          suffix_next = 'n', -- Suffix to search with "next" method
         },
       }
+      vim.keymap.set('x', 's', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
 
       -- Set up Zed-like keybinding: 's' in visual mode to add surrounds
       -- vim.keymap.set('x', 's', function()
@@ -1112,8 +1113,8 @@ require('lazy').setup({
   {
     'ggandor/leap.nvim',
     config = function()
-      vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap)', { desc = 'Leap in window' })
-      vim.keymap.set('n', 'g<S-s>', '<Plug>(leap-from-window)', { desc = 'Leap from window' })
+      vim.keymap.set({ 'n', 'o' }, 's', '<Plug>(leap)', { desc = 'Leap in window' })
+      vim.keymap.set('n', '<S-s>', '<Plug>(leap-from-window)', { desc = 'Leap from window' })
     end,
   },
   { 'EdenEast/nightfox.nvim' },
