@@ -319,7 +319,7 @@ require('lazy').setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-  { -- Useful plugin to show you pending keybinds.
+  {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -401,7 +401,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -509,7 +509,7 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',    opts = {} },
 
       -- Allows extra capabilities provided by blink.cmp
       'saghen/blink.cmp',
@@ -922,117 +922,6 @@ require('lazy').setup({
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
-  { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
-    config = function()
-      -- Better Around/Inside textobjects
-      --
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]paren
-      --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
-      --  - ci'  - [C]hange [I]nside [']quote
-      local ai = require 'mini.ai'
-
-      ai.setup {
-        n_lines = 500,
-
-        custom_textobjects = {
-          o = ai.gen_spec.treesitter {
-            a = { '@block.outer', '@conditional.outer', '@loop.outer' },
-            i = { '@block.inner', '@conditional.inner', '@loop.inner' },
-          },
-
-          f = ai.gen_spec.treesitter {
-            a = '@function.outer',
-            i = '@function.inner',
-          },
-
-          c = ai.gen_spec.treesitter {
-            a = '@class.outer',
-            i = '@class.inner',
-          },
-
-          t = {
-            '<([%p%w]-)%f[^<%w][^<>]->.-</%1>',
-            '^<.->().*()</[^/]->$',
-          },
-
-          d = { '%f[%d]%d+' },
-
-          e = {
-            {
-              '%u[%l%d]+%f[^%l%d]',
-              '%f[%S][%l%d]+%f[^%l%d]',
-              '%f[%P][%l%d]+%f[^%l%d]',
-              '^[%l%d]+%f[^%l%d]',
-            },
-            '^().*()$',
-          },
-
-          -- buffer textobject (LazyVim-free)
-          g = function()
-            local from = { line = 1, col = 1 }
-            local to = {
-              line = vim.fn.line '$',
-              col = math.max(vim.fn.getline('$'):len(), 1),
-            }
-
-            return {
-              from = from,
-              to = to,
-              vis_mode = 'V', -- linewise
-            }
-          end,
-
-          u = ai.gen_spec.function_call(),
-          U = ai.gen_spec.function_call { name_pattern = '[%w_]' },
-        },
-      }
-
-      -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup {
-        mappings = {
-          add = '', -- Add surrounding in Normal and Visual modes
-          delete = 'ds', -- Delete surrounding
-          find = '', -- Find surrounding (to the right)
-          find_left = '', -- Find surrounding (to the left)
-          highlight = '', -- Highlight surrounding
-          replace = 'cs', -- Replace surrounding
-          --
-          suffix_last = 'l', -- Suffix to search with "prev" method
-          suffix_next = 'n', -- Suffix to search with "next" method
-        },
-      }
-      vim.keymap.set('x', 's', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
-
-      -- Set up Zed-like keybinding: 's' in visual mode to add surrounds
-      -- vim.keymap.set('x', 's', function()
-      --   require('mini.surround').add 'visual'
-      -- end, { desc = 'Add surround (Zed-like)' })
-
-      -- Simple and easy statusline.
-      --  You could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
-      -- local statusline = require 'mini.statusline'
-      -- set use_icons to true if you have a Nerd Font
-      -- statusline.setup { use_icons = vim.g.have_nerd_font }
-
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
-      ---@diagnostic disable-next-line: duplicate-set-field
-      -- statusline.section_location = function()
-      --   return '%2l:%-2v'
-      -- end
-
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
-    end,
-  },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -1068,80 +957,18 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
-  {
-    'max397574/better-escape.nvim',
-    config = function()
-      require('better_escape').setup()
-    end,
-  },
-  -- {
-  --   'sphamba/smear-cursor.nvim',
-  --
-  --   opts = {
-  --     smear_between_buffers = false,
-  --     smear_between_neighbor_lines = true,
-  --     scroll_buffer_space = false,
-  --     legacy_computing_symbols_support = false,
-  --     smear_insert_mode = true,
-  --     stiffness = 0.8,
-  --     trailing_stiffness = 0.6,
-  --     stiffness_insert_mode = 0.7,
-  --     trailing_stiffness_insert_mode = 0.7,
-  --     damping = 0.95,
-  --     damping_insert_mode = 0.95,
-  --     distance_stop_animating = 0.5,
-  --     time_interval = 7,
-  --   },
-  -- },
-  {
-    'karb94/neoscroll.nvim',
-    opts = {
-      duration_multiplier = 0.8, -- Faster animation (default is 1)
-    },
-  },
-  {
-    'ggandor/leap.nvim',
-    config = function()
-      vim.keymap.set({ 'n', 'o' }, 's', '<Plug>(leap)', { desc = 'Leap in window' })
-      vim.keymap.set('n', '<S-s>', '<Plug>(leap-from-window)', { desc = 'Leap from window' })
-    end,
-  },
-  { 'EdenEast/nightfox.nvim' },
-  {
-    'catppuccin/nvim',
-    name = 'catppuccin',
-    priority = 1000,
-    config = function()
-      -- vim.cmd.colorscheme 'carbonfox'
-    end,
-  },
-  {
-    'ellisonleao/gruvbox.nvim',
-    priority = 1000,
-    config = function()
-      -- vim.cmd.colorscheme 'gruvbox'
-    end,
-  },
-  {
-    'nyoom-engineering/oxocarbon.nvim',
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'oxocarbon'
-    end,
-  },
-  -- 'xiyaowong/fast-cursor-move.nvim',
+  { import = 'custom.plugins' },
   --
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
