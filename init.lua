@@ -171,11 +171,20 @@ vim.o.scrolloff = 10
 vim.o.confirm = true
 
 -- Enable folding with treesitter
--- vim.o.foldmethod = 'expr'
--- vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
--- vim.o.foldlevel = 99      -- Start with all folds open
--- vim.o.foldlevelstart = 99 -- Start with all folds open when opening a file
--- vim.o.foldenable = true   -- Enable folding
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+-- vim.o.foldcolumn = '0'
+-- vim.o.foldtext = ''
+-- vim.o.foldtext = (function()
+--   local line = vim.fn.getline(vim.v.foldstart)
+--   local sub = line:gsub('/%*|%*/|{{{%d=?', '')
+--   return vim.v.folddashes .. sub
+-- end)()
+vim.o.foldlevel = 99 -- Start with all folds open
+vim.o.foldlevelstart = 4 -- Start with all folds open when opening a file
+vim.o.foldnestmax = 4
+vim.o.foldminlines = 5
+
 vim.o.expandtab = true
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
@@ -592,7 +601,7 @@ require('lazy').setup({
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
-          map('gt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
+          map('gy', require('telescope.builtin').lsp_type_definitions, '[G]oto T[y]pe Definition')
 
           -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
           ---@param client vim.lsp.Client
