@@ -185,6 +185,7 @@ function _G.CustomFoldText()
 
   first = first:gsub('/%*|%*/|{{{%d=?', '')
   last = last:gsub('/%*|%*/|}}}%d=?', '')
+  last = last:gsub('%s+$', '')
 
   return {
     { first .. ' ', 'Folded' },
