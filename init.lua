@@ -175,11 +175,28 @@ vim.o.foldmethod = 'expr'
 vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 -- vim.o.foldcolumn = '0'
 -- vim.o.foldtext = ''
--- vim.o.foldtext = (function()
---   local line = vim.fn.getline(vim.v.foldstart)
---   local sub = line:gsub('/%*|%*/|{{{%d=?', '')
---   return vim.v.folddashes .. sub
--- end)()
+function _G.CustomFoldText()
+  local s = vim.v.foldstart
+  local e = vim.v.foldend
+  local n = e - s + 1
+
+  local first = vim.fn.getline(s)
+  local last = vim.fn.getline(e)
+
+  first = first:gsub('/%*|%*/|{{{%d=?', '')
+  last = last:gsub('/%*|%*/|}}}%d=?', '')
+
+  return {
+    { first .. ' ', 'Folded' },
+    { '(' .. n .. ' lines) ', 'Comment' },
+    { last, 'Folded' },
+  }
+end
+
+vim.opt.foldtext = 'v:lua.CustomFoldText()'
+
+-- 2. Привʼязка до опції
+vim.opt.foldtext = 'v:lua.CustomFoldText()'
 vim.o.foldlevel = 99 -- Start with all folds open
 vim.o.foldlevelstart = 4 -- Start with all folds open when opening a file
 vim.o.foldnestmax = 4
