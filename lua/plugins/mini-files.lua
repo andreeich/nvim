@@ -31,6 +31,16 @@ return {
   config = function(_, opts)
     require('mini.files').setup(opts)
 
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "TelescopeFindPre",
+      callback = function()
+        local ok, mini_files = pcall(require, "mini.files")
+        if ok then
+          mini_files.close()
+        end
+      end
+    })
+
     local show_dotfiles = true
     local filter_show = function(fs_entry)
       return true
@@ -80,9 +90,11 @@ return {
       callback = function(args)
         local buf_id = args.data.buf_id
 
-        vim.keymap.set('n', opts.mappings and opts.mappings.toggle_hidden or 'g.', toggle_dotfiles, { buffer = buf_id, desc = 'Toggle hidden files' })
+        vim.keymap.set('n', opts.mappings and opts.mappings.toggle_hidden or 'g.', toggle_dotfiles,
+          { buffer = buf_id, desc = 'Toggle hidden files' })
 
-        vim.keymap.set('n', opts.mappings and opts.mappings.change_cwd or 'gc', files_set_cwd, { buffer = args.data.buf_id, desc = 'Set cwd' })
+        vim.keymap.set('n', opts.mappings and opts.mappings.change_cwd or 'gc', files_set_cwd,
+          { buffer = args.data.buf_id, desc = 'Set cwd' })
 
         map_split(buf_id, opts.mappings and opts.mappings.go_in_horizontal or '<C-w>s', 'horizontal', false)
         map_split(buf_id, opts.mappings and opts.mappings.go_in_vertical or '<C-w>v', 'vertical', false)
