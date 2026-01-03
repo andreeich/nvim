@@ -4,6 +4,7 @@
 return {
   'nvim-neo-tree/neo-tree.nvim',
   version = '*',
+  enabled = false,
   dependencies = {
     'nvim-lua/plenary.nvim',
     'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
@@ -11,7 +12,7 @@ return {
   },
   lazy = false,
   keys = {
-    { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
+    { '<leader>e', ':Neotree action=focus source=filesystem position=float toggle=true<CR>', desc = 'NeoTree reveal', silent = true },
   },
   opts = {
     commands = {
@@ -82,8 +83,10 @@ return {
     },
     filesystem = {
       window = {
+        position = 'float',
         mappings = {
-          ['\\'] = 'close_window',
+          -- normal mode
+          ['<leader>e'] = 'close_window',
           ['<S-CR>'] = 'system_open',
           ['<Space>'] = false,
           ['[b'] = 'prev_source',
