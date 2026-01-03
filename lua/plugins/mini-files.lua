@@ -31,6 +31,7 @@ return {
   config = function(_, opts)
     require('mini.files').setup(opts)
 
+    -- Close mini.files when telescope opens (proper conflict resolution)
     vim.api.nvim_create_autocmd("User", {
       pattern = "TelescopeFindPre",
       callback = function()
@@ -40,6 +41,71 @@ return {
         end
       end
     })
+
+    -- Function to open file/directory in system file manager and focus on element
+    local system_open = function()
+      local fs_entry = require('mini.files').get_fs_entry()
+      if not fs_entry then
+        return
+      end
+
+      local path = fs_entry.path
+
+      -- For files, reveal in containing folder with focus
+      if vim.fn.has('mac') == 1 then
+        -- macOS: Use 'open -R' to reveal in Finder
+        vim.fn.system(string.format('open -R %s', vim.fn.shellescape(path)))
+      elseif vim.fn.has('win32') == 1 then
+        -- Windows: Use 'explorer /select'
+        vim.fn.system(string.format('explorer /select,%s', vim.fn.shellescape(path)))
+      else
+        -- Linux: Fall back to opening containing directory
+        local parent_dir = vim.fn.fnamemodify(path, ':h')
+        vim.ui.open(parent_dir)
+      end
+    end
+
+    -- Function to copy path with selector (similar to neo-tree)
+    local copy_path = function()
+      local fs_entry = require('mini.files').get_fs_entry()
+      if not fs_entry then
+        vim.notify('No file selected', vim.log.levels.WARN)
+        return
+      end
+
+      local filepath = fs_entry.path
+      local filename = fs_entry.name
+      local modify = vim.fn.fnamemodify
+
+      local vals = {
+        ['FILENAME'] = filename,
+        ['PATH (CWD)'] = modify(filepath, ':.'),
+        ['PATH (HOME)'] = modify(filepath, ':~'),
+      }
+
+      local options = vim.tbl_filter(function(val)
+        return vals[val] ~= ''
+      end, vim.tbl_keys(vals))
+
+      if vim.tbl_isempty(options) then
+        vim.notify('No values to copy', vim.log.levels.WARN)
+        return
+      end
+
+      table.sort(options)
+      vim.ui.select(options, {
+        prompt = 'Choose to copy to clipboard:',
+        format_item = function(item)
+          return ('%s: %s'):format(item, vals[item])
+        end,
+      }, function(choice)
+        local result = vals[choice]
+        if result then
+          vim.notify(('Copied: `%s`'):format(result))
+          vim.fn.setreg('+', result)
+        end
+      end)
+    end
 
     local show_dotfiles = true
     local filter_show = function(fs_entry)
@@ -95,6 +161,13 @@ return {
 
         vim.keymap.set('n', opts.mappings and opts.mappings.change_cwd or 'gc', files_set_cwd,
           { buffer = args.data.buf_id, desc = 'Set cwd' })
+
+        -- Copy path functionality (similar to neo-tree Y mapping)
+        vim.keymap.set('n', 'Y', copy_path, { buffer = buf_id, desc = 'Copy path' })
+
+        -- System open functionality (similar to neo-tree O and <S-CR> mappings)
+        vim.keymap.set('n', 'O', system_open, { buffer = buf_id, desc = 'Open in system file manager' })
+        vim.keymap.set('n', '<S-CR>', system_open, { buffer = buf_id, desc = 'Open in system file manager' })
 
         map_split(buf_id, opts.mappings and opts.mappings.go_in_horizontal or '<C-w>s', 'horizontal', false)
         map_split(buf_id, opts.mappings and opts.mappings.go_in_vertical or '<C-w>v', 'vertical', false)
