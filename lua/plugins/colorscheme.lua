@@ -17,7 +17,7 @@ return {
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      -- vim.cmd.colorscheme 'tokyonight-night'
     end,
   },
   { 'EdenEast/nightfox.nvim' },
@@ -41,6 +41,25 @@ return {
     priority = 1000,
     config = function()
       -- vim.cmd.colorscheme 'oxocarbon'
+    end,
+  },
+  {
+    'olimorris/onedarkpro.nvim',
+    priority = 1000, -- Ensure it loads first
+    config = function()
+      -- vim.cmd.colorscheme 'onedark_dark'
+    end,
+  },
+  { 'typicode/bg.nvim', lazy = false },
+  { 'patstockwell/vim-monokai-tasty', priority = 1000 },
+  -- { 'dracula/vim', priority = 1000 },
+  {
+    dir = '~/.local/share/nvim/site/pack/themes/start/dracula_pro',
+    name = 'dracula_pro',
+    priority = 1000,
+    config = function()
+      vim.g.dracula_colorterm = 1
+      vim.cmd.colorscheme 'dracula_pro_blade'
     end,
   },
 }

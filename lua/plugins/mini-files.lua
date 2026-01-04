@@ -14,32 +14,38 @@ return {
   },
   keys = {
     {
-      '<leader>fm',
+      '<leader>e',
       function()
-        require('mini.files').open(vim.api.nvim_buf_get_name(0), true)
+        local mini_files = require 'mini.files'
+        if not mini_files.close() then
+          mini_files.open(vim.api.nvim_buf_get_name(0), true)
+        end
       end,
-      desc = 'Open mini.files (Directory of Current File)',
+      desc = 'Toggle mini.files (Directory of Current File)',
     },
     {
-      '<leader>fM',
+      '<leader>E',
       function()
-        require('mini.files').open(vim.uv.cwd(), true)
+        local mini_files = require 'mini.files'
+        if not mini_files.close() then
+          mini_files.open(vim.uv.cwd(), true)
+        end
       end,
-      desc = 'Open mini.files (cwd)',
+      desc = 'Toggle mini.files (cwd)',
     },
   },
   config = function(_, opts)
     require('mini.files').setup(opts)
 
     -- Close mini.files when telescope opens (proper conflict resolution)
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "TelescopeFindPre",
+    vim.api.nvim_create_autocmd('User', {
+      pattern = 'TelescopeFindPre',
       callback = function()
-        local ok, mini_files = pcall(require, "mini.files")
+        local ok, mini_files = pcall(require, 'mini.files')
         if ok then
           mini_files.close()
         end
-      end
+      end,
     })
 
     -- Function to open file/directory in system file manager and focus on element
@@ -52,10 +58,10 @@ return {
       local path = fs_entry.path
 
       -- For files, reveal in containing folder with focus
-      if vim.fn.has('mac') == 1 then
+      if vim.fn.has 'mac' == 1 then
         -- macOS: Use 'open -R' to reveal in Finder
         vim.fn.system(string.format('open -R %s', vim.fn.shellescape(path)))
-      elseif vim.fn.has('win32') == 1 then
+      elseif vim.fn.has 'win32' == 1 then
         -- Windows: Use 'explorer /select'
         vim.fn.system(string.format('explorer /select,%s', vim.fn.shellescape(path)))
       else
@@ -156,11 +162,9 @@ return {
       callback = function(args)
         local buf_id = args.data.buf_id
 
-        vim.keymap.set('n', opts.mappings and opts.mappings.toggle_hidden or 'g.', toggle_dotfiles,
-          { buffer = buf_id, desc = 'Toggle hidden files' })
+        vim.keymap.set('n', opts.mappings and opts.mappings.toggle_hidden or 'g.', toggle_dotfiles, { buffer = buf_id, desc = 'Toggle hidden files' })
 
-        vim.keymap.set('n', opts.mappings and opts.mappings.change_cwd or 'gc', files_set_cwd,
-          { buffer = args.data.buf_id, desc = 'Set cwd' })
+        vim.keymap.set('n', opts.mappings and opts.mappings.change_cwd or 'gc', files_set_cwd, { buffer = args.data.buf_id, desc = 'Set cwd' })
 
         -- Copy path functionality (similar to neo-tree Y mapping)
         vim.keymap.set('n', 'Y', copy_path, { buffer = buf_id, desc = 'Copy path' })
