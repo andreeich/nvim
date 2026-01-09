@@ -21,6 +21,7 @@ return {
 
     -- Useful for getting pretty icons, but requires a Nerd Font.
     { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+    'debugloop/telescope-undo.nvim',
   },
   config = function()
     -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -68,6 +69,9 @@ return {
         ['ui-select'] = {
           require('telescope.themes').get_dropdown(),
         },
+        ['undo'] = {
+          require('telescope').load_extension 'undo',
+        },
       },
     }
 
@@ -86,6 +90,7 @@ return {
     vim.keymap.set('x', '<leader>sg', builtin.grep_string, { desc = '[S]earch current [W]ord' })
     vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
     vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+    vim.keymap.set('n', '<leader>su', '<cmd>Telescope undo<CR>', { desc = '[S]earch [U]ndo' })
     vim.keymap.set('n', '<leader>.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
     vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
