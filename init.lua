@@ -1,5 +1,6 @@
 --[[
 
+
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
@@ -248,17 +249,23 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
 -- NOTE: Custom keymaps
-vim.keymap.set('n', 'gb', ':tabprevious<CR>', { silent = true, desc = 'Go to previous tab page' })
 vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', {
-  desc = 'Write file',
+  desc = '[W]rite file',
 })
-vim.keymap.set('n', '[t', ':tabprevious<CR>', { silent = true, desc = 'Go to previous tab page' })
-vim.keymap.set('n', ']t', ':tabnext<CR>', { silent = true, desc = 'Go to next tab page' })
+
+vim.keymap.set('n', '<leader>W', '<cmd>wall<CR>', { silent = true, desc = '[W]rite all' })
+vim.keymap.set('n', '[t', '<cmd>tabprevious<CR>', { silent = true, desc = 'Go to previous tab page' })
+vim.keymap.set('n', ']t', '<cmd>tabnext<CR>', { silent = true, desc = 'Go to next tab page' })
 
 -- NOTE: Quit
-vim.keymap.set('n', '<leader>qb', ':bdelete<CR>', { silent = true, desc = '[Q]uit [B]uffer' })
-vim.keymap.set('n', '<leader>qt', ':tabclose<CR>', { silent = true, desc = '[Q]uit [T]ab' })
-vim.keymap.set('n', '<leader>qq', ':quit<CR>', { silent = true, desc = '[Q]uit' })
+vim.keymap.set('n', '<leader>qb', '<cmd>bdelete<CR>', { silent = true, desc = '[Q]uit [B]uffer' })
+vim.keymap.set('n', '<leader>qt', '<cmd>tabclose<CR>', { silent = true, desc = '[Q]uit [T]ab' })
+vim.keymap.set('n', '<leader>qq', '<cmd>quit<CR>', { silent = true, desc = '[Q]uit' })
+vim.keymap.set('n', '<leader>qw', '<cmd>wqall<CR>', { silent = true, desc = '[Q]uit and [W]rite all' })
+
+-- NOTE: New
+vim.keymap.set('n', '<leader>nb', '<cmd>enew<CR>', { silent = true, desc = '[N]ew [B]uffer' })
+vim.keymap.set('n', '<leader>nt', '<cmd>tnew<CR>', { silent = true, desc = '[N]ew [T]ab' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
