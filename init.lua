@@ -252,6 +252,13 @@ vim.keymap.set('n', 'gb', ':tabprevious<CR>', { silent = true, desc = 'Go to pre
 vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', {
   desc = 'Write file',
 })
+vim.keymap.set('n', '[t', ':tabprevious<CR>', { silent = true, desc = 'Go to previous tab page' })
+vim.keymap.set('n', ']t', ':tabnext<CR>', { silent = true, desc = 'Go to next tab page' })
+
+-- NOTE: Quit
+vim.keymap.set('n', '<leader>qb', ':bdelete<CR>', { silent = true, desc = '[Q]uit [B]uffer' })
+vim.keymap.set('n', '<leader>qt', ':tabclose<CR>', { silent = true, desc = '[Q]uit [T]ab' })
+vim.keymap.set('n', '<leader>qq', ':quit<CR>', { silent = true, desc = '[Q]uit' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
