@@ -62,4 +62,20 @@ return {
       vim.cmd.colorscheme 'dracula_pro_blade'
     end,
   },
+
+  {
+    'andreeich/dracula.nvim',
+    name = 'dracula',
+    lazy = false, -- make sure we load this during startup
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      -- load the colorscheme here
+      require('dracula').load { style = 'strigoi' }
+      vim.keymap.set('n', '<leader>tdc', ':colorscheme dracula-carmilla<CR>')
+      vim.keymap.set('n', '<leader>tds', ':colorscheme dracula-sypha<CR>')
+      vim.keymap.set('n', '<leader>dt', ':colorscheme dracula-strigoi<CR>')
+      vim.keymap.set('n', '<leader>dl', ':colorscheme dracula-lenore<CR>')
+      vim.keymap.set('n', '<leader>da', ':colorscheme dracula-akasha<CR>')
+    end,
+  },
 }
