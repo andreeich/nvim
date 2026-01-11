@@ -162,9 +162,11 @@ return {
       callback = function(args)
         local buf_id = args.data.buf_id
 
-        vim.keymap.set('n', opts.mappings and opts.mappings.toggle_hidden or 'g.', toggle_dotfiles, { buffer = buf_id, desc = 'Toggle hidden files' })
+        vim.keymap.set('n', opts.mappings and opts.mappings.toggle_hidden or 'g.', toggle_dotfiles,
+          { buffer = buf_id, desc = 'Toggle hidden files' })
 
-        vim.keymap.set('n', opts.mappings and opts.mappings.change_cwd or 'gc', files_set_cwd, { buffer = args.data.buf_id, desc = 'Set cwd' })
+        vim.keymap.set('n', opts.mappings and opts.mappings.change_cwd or 'gc', files_set_cwd,
+          { buffer = args.data.buf_id, desc = 'Set cwd' })
 
         -- Copy path functionality (similar to neo-tree Y mapping)
         vim.keymap.set('n', 'Y', copy_path, { buffer = buf_id, desc = 'Copy path' })

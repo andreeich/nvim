@@ -89,6 +89,7 @@ return {
     pcall(require('telescope').load_extension, 'fzf')
     pcall(require('telescope').load_extension, 'ui-select')
     pcall(require('telescope').load_extension, 'live_grep_args')
+    pcall(require('telescope').load_extension 'projects')
 
     -- See `:help telescope.builtin`
     local builtin = require 'telescope.builtin'
@@ -99,6 +100,9 @@ return {
     vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
     vim.keymap.set('n', '<leader>sg', require('telescope').extensions.live_grep_args.live_grep_args, { desc = '[S]earch by [G]rep with args' })
     vim.keymap.set('x', '<leader>sg', require('telescope-live-grep-args.shortcuts').grep_visual_selection, { desc = '[S]earch current [W]ord' })
+    vim.keymap.set('n', '<leader>sp', function()
+      require('telescope').extensions.projects.projects {}
+    end, { desc = '[S]earch [P]rojects' })
     vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
     vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
     vim.keymap.set('n', '<leader>su', '<cmd>Telescope undo<CR>', { desc = '[S]earch [U]ndo' })
