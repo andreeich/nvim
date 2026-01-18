@@ -249,11 +249,11 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
 -- NOTE: Custom keymaps
-vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', {
-  desc = '[W]rite file',
-})
+-- vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', {
+--   desc = '[W]rite file',
+-- })
 
-vim.keymap.set('n', '<leader>W', '<cmd>wall<CR>', { silent = true, desc = '[W]rite all' })
+-- vim.keymap.set('n', '<leader>W', '<cmd>wall<CR>', { silent = true, desc = '[W]rite all' })
 vim.keymap.set('n', '[t', '<cmd>tabprevious<CR>', { silent = true, desc = 'Go to previous tab page' })
 vim.keymap.set('n', ']t', '<cmd>tabnext<CR>', { silent = true, desc = 'Go to next tab page' })
 
@@ -263,7 +263,7 @@ vim.keymap.set('n', '<leader>qt', '<cmd>tabclose<CR>', { silent = true, desc = '
 vim.keymap.set('n', '<leader>qq', '<cmd>quit<CR>', { silent = true, desc = '[Q]uit' })
 vim.keymap.set('n', '<leader>qa', '<cmd>qall<CR>', { silent = true, desc = '[Q]uit [A]ll' })
 -- NOTE: Write
-vim.keymap.set('n', '<leader>ww', '<cmd>ww<CR>', { silent = true, desc = '[W]rite' })
+vim.keymap.set('n', '<leader>ww', '<cmd>w<CR>', { silent = true, desc = '[W]rite' })
 vim.keymap.set('n', '<leader>wq', '<cmd>wq<CR>', { silent = true, desc = '[W]rite [Q]uit' })
 vim.keymap.set('n', '<leader>wa', '<cmd>wall<CR>', { silent = true, desc = '[W]rite [A]ll' })
 vim.keymap.set('n', '<leader>wk', '<cmd>noa w<CR>', { silent = true, desc = '[W]rite No Auto[C]ommand write' })
