@@ -1,4 +1,5 @@
 -- Load core configuration modules
-require('config.setup')
-require('config.keymaps')
-require('config.autocommands')
+require 'config.setup'
+require 'config.keymaps'
+require 'config.autocommands'
+require 'config.custom'

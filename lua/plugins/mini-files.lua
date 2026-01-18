@@ -18,10 +18,16 @@ return {
       function()
         local mini_files = require 'mini.files'
         if not mini_files.close() then
-          mini_files.open(vim.api.nvim_buf_get_name(0), true)
+          local buf_name = vim.api.nvim_buf_get_name(0)
+          local ok, _ = pcall(mini_files.open, buf_name, true)
+
+          if not ok then
+            -- If opening the buffer path fails, fall back to cwd
+            mini_files.open(vim.uv.cwd(), true)
+          end
         end
       end,
-      desc = 'Toggle mini.files (Directory of Current File)',
+      desc = 'Toggle mini.files (Directory of Current File or CWD)',
     },
     {
       '<leader>E',

@@ -29,3 +29,5 @@ vim.keymap.set('n', '<leader>wk', '<cmd>noa w<CR>', { silent = true, desc = '[W]
 -- NOTE: New
 vim.keymap.set('n', '<leader>nb', '<cmd>enew<CR>', { silent = true, desc = '[N]ew [B]uffer' })
 vim.keymap.set('n', '<leader>nt', '<cmd>tabnew<CR>', { silent = true, desc = '[N]ew [T]ab' })
+-- NOTE: Diagnostics
+vim.keymap.set('n', 'gh', vim.diagnostic.open_float, { silent = true, desc = '[G]o to line [D]iagnostics' })
