@@ -38,8 +38,8 @@ return {
 
         -- Extend scss filetype to include css snippets
         luasnip.filetype_extend('scss', { 'css' })
-        luasnip.filetype_extend('javascript', { 'typescript' })
-        luasnip.filetype_extend('javascript', { 'tsx' })
+        luasnip.filetype_extend('typescript', { 'javascript' })
+        luasnip.filetype_extend('tsx', { 'javascript' })
       end,
     },
     'folke/lazydev.nvim',
