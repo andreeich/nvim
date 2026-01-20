@@ -7,6 +7,12 @@ return {
     {
       '<leader>f',
       function()
+        -- Run ESLint fixes for JS/TS files first
+        local filetype = vim.bo.filetype
+        if filetype == 'javascript' or filetype == 'typescript' or
+            filetype == 'javascriptreact' or filetype == 'typescriptreact' then
+          vim.cmd('silent! LspEslintFixAll')
+        end
         require('conform').format { async = true, lsp_format = 'fallback' }
       end,
       mode = '',
