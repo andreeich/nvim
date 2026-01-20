@@ -53,15 +53,15 @@ return {
   { 'typicode/bg.nvim', lazy = false },
   { 'patstockwell/vim-monokai-tasty', priority = 1000 },
   -- { 'dracula/vim', priority = 1000 },
-  {
-    dir = '~/.local/share/nvim/site/pack/themes/start/dracula_pro',
-    name = 'dracula_pro',
-    priority = 1000,
-    config = function()
-      vim.g.dracula_colorterm = 1
-      vim.cmd.colorscheme 'dracula_pro_blade'
-    end,
-  },
+  -- {
+  --   dir = '~/.local/share/nvim/site/pack/themes/start/dracula_pro',
+  --   name = 'dracula_pro',
+  --   priority = 1000,
+  --   config = function()
+  --     vim.g.dracula_colorterm = 1
+  --     vim.cmd.colorscheme 'dracula_pro_blade'
+  --   end,
+  -- },
   -- {
   --   'andreeich/dracula.nvim',
   --   name = 'dracula',
@@ -77,4 +77,18 @@ return {
   --     vim.keymap.set('n', '<leader>da', ':colorscheme dracula-akasha<CR>')
   --   end,
   -- },
+  -- {
+  --   'andreeich/catppuccin-extended',
+  --   name = 'catppuccin-extended',
+  --   priority = 1000,
+  --   config = function()
+  --     -- vim.cmd.colorscheme 'carbonfox'
+  --   end,
+  -- },
+  {
+    'andreeich/castlevania.nvim',
+    config = function()
+      vim.cmd.colorscheme 'blade'
+    end,
+  },
 }
