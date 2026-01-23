@@ -7,18 +7,24 @@ return {
     {
       '<leader>f',
       function()
-        -- Run ESLint fixes for JS/TS files first
-        local filetype = vim.bo.filetype
-        if filetype == 'javascript' or filetype == 'typescript' or
-            filetype == 'javascriptreact' or filetype == 'typescriptreact' then
-          vim.cmd('silent! LspEslintFixAll')
-        end
         require('conform').format { async = true, lsp_format = 'fallback' }
       end,
       mode = '',
       desc = '[F]ormat buffer',
     },
   },
+  config = function(_, opts)
+    require('conform').setup(opts)
+
+    -- ESLint autocommand for auto-fixing on save
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = vim.api.nvim_create_augroup("eslint_fix", { clear = true }),
+      pattern = { "*.js", "*.jsx", "*.ts", "*.tsx" },
+      callback = function()
+        vim.cmd("silent! LspEslintFixAll")
+      end,
+    })
+  end,
   opts = {
     notify_on_error = false,
     format_on_save = function(bufnr)
