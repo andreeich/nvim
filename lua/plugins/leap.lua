@@ -1,5 +1,4 @@
 return {
-
   {
     'ggandor/leap.nvim',
     labels = 'sfnjklhodweimbuyvrgtaqpcxz',

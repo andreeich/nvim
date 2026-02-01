@@ -102,17 +102,14 @@ function _G.CustomFoldText()
   last = last:gsub('%s+$', '')
 
   return {
-    { first .. ' ', 'Folded' },
+    { first .. ' ',           'Folded' },
     { '(' .. n .. ' lines) ', 'Comment' },
-    { last, 'Folded' },
+    { last,                   'Folded' },
   }
 end
 
 vim.opt.foldtext = 'v:lua.CustomFoldText()'
-
--- 2. Привʼязка до опції
-vim.opt.foldtext = 'v:lua.CustomFoldText()'
-vim.o.foldlevel = 99 -- Start with all folds open
+vim.o.foldlevel = 99     -- Start with all folds open
 vim.o.foldlevelstart = 4 -- Start with all folds open when opening a file
 vim.o.foldnestmax = 4
 vim.o.foldminlines = 5

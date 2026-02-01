@@ -1,4 +1,3 @@
--- mini.statusline - Simple and easy statusline
 return {
   'echasnovski/mini.statusline',
   version = false,
@@ -21,13 +20,13 @@ return {
       local search = MiniStatusline.section_searchcount { trunc_width = 75 }
 
       return MiniStatusline.combine_groups {
-        { hl = mode_hl, strings = { mode } },
+        { hl = mode_hl,                 strings = { mode } },
         { hl = 'MiniStatuslineDevinfo', strings = { git, diff, diagnostics, lsp } },
         '%<', -- Mark general truncate point
         { hl = 'MiniStatuslineFilename', strings = { filename } },
         '%=', -- End left alignment
         { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
-        { hl = mode_hl, strings = { search, location } },
+        { hl = mode_hl,                  strings = { search, location } },
       }
     end
   end,

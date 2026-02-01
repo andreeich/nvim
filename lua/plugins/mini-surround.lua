@@ -1,20 +1,15 @@
--- mini.surround - Add/delete/replace surroundings (brackets, quotes, etc.)
--- Examples:
---  - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
---  - sd'   - [S]urround [D]elete [']quotes
---  - sr)'  - [S]urround [R]eplace [)] [']
 return {
   'echasnovski/mini.surround',
   version = false,
   config = function()
     require('mini.surround').setup {
       mappings = {
-        add = '', -- Add surrounding in Normal and Visual modes
-        delete = 'ds', -- Delete surrounding
-        find = '', -- Find surrounding (to the right)
-        find_left = '', -- Find surrounding (to the left)
-        highlight = '', -- Highlight surrounding
-        replace = 'cs', -- Replace surrounding
+        add = '',          -- Add surrounding in Normal and Visual modes
+        delete = 'ds',     -- Delete surrounding
+        find = '',         -- Find surrounding (to the right)
+        find_left = '',    -- Find surrounding (to the left)
+        highlight = '',    -- Highlight surrounding
+        replace = 'cs',    -- Replace surrounding
         --
         suffix_last = 'l', -- Suffix to search with "prev" method
         suffix_next = 'n', -- Suffix to search with "next" method

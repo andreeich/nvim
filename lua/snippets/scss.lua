@@ -16,6 +16,7 @@ return {
     },
   }),
 
+  -- [[ My main project snippets ]]
   -- Color variables - Text
   s('clr-text-primary', t 'var(--clr-text-primary)'),
   s('clr-text-primary-inverted', t 'var(--clr-text-primary-inverted)'),
