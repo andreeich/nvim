@@ -33,3 +33,4 @@ vim.keymap.set('n', '<leader>wk', '<cmd>noa w<CR>', { silent = true, desc = '[W]
 -- [[ Create new buffer/tab keymaps ]]
 vim.keymap.set('n', '<leader>nb', '<cmd>enew<CR>', { silent = true, desc = '[N]ew [B]uffer' })
 vim.keymap.set('n', '<leader>nt', '<cmd>tabnew<CR>', { silent = true, desc = '[N]ew [T]ab' })
+vim.keymap.set('n', '<leader>nj', '<cmd>terminal<CR>', { silent = true, desc = '[N]ew Terminal' })
