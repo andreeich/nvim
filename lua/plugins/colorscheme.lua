@@ -45,7 +45,7 @@ return {
   {
     'andreeich/castlevania.nvim',
     config = function()
-      vim.cmd.colorscheme 'blade'
+      vim.cmd.colorscheme 'castlevania-blade'
     end,
   },
 }

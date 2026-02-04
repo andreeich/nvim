@@ -1,6 +1,6 @@
 return {
   {
-    'ggandor/leap.nvim',
+    'https://codeberg.org/andyg/leap.nvim',
     labels = 'sfnjklhodweimbuyvrgtaqpcxz',
     config = function()
       vim.keymap.set({ 'n', 'o' }, 's', '<Plug>(leap)', { desc = 'Leap in window' })
