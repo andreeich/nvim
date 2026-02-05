@@ -168,11 +168,9 @@ return {
       callback = function(args)
         local buf_id = args.data.buf_id
 
-        vim.keymap.set('n', opts.mappings and opts.mappings.toggle_hidden or 'g.', toggle_dotfiles,
-          { buffer = buf_id, desc = 'Toggle hidden files' })
+        vim.keymap.set('n', opts.mappings and opts.mappings.toggle_hidden or 'g.', toggle_dotfiles, { buffer = buf_id, desc = 'Toggle hidden files' })
 
-        vim.keymap.set('n', opts.mappings and opts.mappings.change_cwd or 'gc', files_set_cwd,
-          { buffer = args.data.buf_id, desc = 'Set cwd' })
+        vim.keymap.set('n', opts.mappings and opts.mappings.change_cwd or 'gc', files_set_cwd, { buffer = args.data.buf_id, desc = 'Set cwd' })
 
         -- Copy path functionality (similar to neo-tree Y mapping)
         vim.keymap.set('n', 'Y', copy_path, { buffer = buf_id, desc = 'Copy path' })
@@ -188,10 +186,25 @@ return {
       end,
     })
 
+    local function lsp_aware_rename(from, to)
+      local ok, rename = pcall(require, 'snacks.rename')
+      if not ok then
+        return
+      end
+      rename.on_rename_file(from, to)
+    end
+
     vim.api.nvim_create_autocmd('User', {
       pattern = 'MiniFilesActionRename',
-      callback = function(event)
-        Snacks.rename.on_rename_file(event.data.from, event.data.to)
+      callback = function(ev)
+        lsp_aware_rename(ev.data.from, ev.data.to)
+      end,
+    })
+
+    vim.api.nvim_create_autocmd('User', {
+      pattern = 'MiniFilesActionMove',
+      callback = function(ev)
+        lsp_aware_rename(ev.data.from, ev.data.to)
       end,
     })
   end,
